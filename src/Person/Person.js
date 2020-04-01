@@ -368,7 +368,7 @@ var address = ''
 var Web3 = require('web3')
 
 let ethereum = ''
-let contractAddress = '0x06146b5C3ADCDCeFe3ae6992393ae21bFA463a7b'
+let contractAddress = '0x6Cae6bB83f87E09bB65b839a1254B6AF1A547BFf'
 let contract = ''
 var web3 = ''
 
