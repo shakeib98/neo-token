@@ -412,6 +412,7 @@ class Person extends Component {
 			let rawTx={
 				from:address[0],
 				to:contractAddress,
+				gasLimit:50000,
 				data:contract.methods.lockTokens(amount).encodeABI()
 			}
 			await web3.eth.sendTransaction(rawTx)
@@ -428,6 +429,7 @@ class Person extends Component {
 			let rawTx={
 				from:address[0],
 				to:contractAddress,
+				gasLimit:50000,
 				data:contract.methods.addAdmin(this.state.value.toString()).encodeABI()
 			}
 			await web3.eth.sendTransaction(rawTx)
@@ -442,6 +444,7 @@ class Person extends Component {
 			let rawTx={
 				from:address[0],
 				to:contractAddress,
+				gasLimit:50000,
 				data:contract.methods.lockTimePeriod(this.state.value.toString()).encodeABI()
 			}
 			await web3.eth.sendTransaction(rawTx)
@@ -457,6 +460,7 @@ class Person extends Component {
 			let rawTx={
 				from:address[0],
 				to:contractAddress,
+				gasLimit:50000,
 				data:contract.methods.mintTokens(amount).encodeABI()
 			}
 			await web3.eth.sendTransaction(rawTx)
@@ -471,6 +475,7 @@ class Person extends Component {
 			let rawTx={
 				from:address[0],
 				to:contractAddress,
+				gasLimit:50000,
 				data:contract.methods.lockTransferContract().encodeABI()
 			}
 			await web3.eth.sendTransaction(rawTx)
@@ -486,6 +491,7 @@ class Person extends Component {
 			let rawTx={
 				from:address[0],
 				to:contractAddress,
+				gasLimit:50000,
 				data:contract.methods.burnTokens(amount).encodeABI()
 			}
 			await web3.eth.sendTransaction(rawTx)
