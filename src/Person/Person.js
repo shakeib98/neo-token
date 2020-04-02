@@ -417,8 +417,6 @@ class Person extends Component {
 			}
 			await web3.eth.sendTransaction(rawTx)
 		}
-		
-
 	}
 
 	approveAdmin = async ()=>{
@@ -498,6 +496,8 @@ class Person extends Component {
 		}
 	}
 
+	
+
 
 	render() {
 
@@ -522,6 +522,11 @@ class Person extends Component {
 				<button className="button" onClick={() => this.mint()} >Mint</button>
 				<button className="button" onClick={() => this.lockContract()}>Lock Contract</button>
 				<button className="button" onClick={() => this.burn()}>Burn</button>
+
+				<br/>
+				<button className="button" onClick={() => this.mint()} >Remove Admin</button>
+				<button className="button" onClick={() => this.lockContract()}>Unlock Contract</button>
+				<button className="button" onClick={() => this.burn()}>Unlock Tokens</button>
 
 				{/* <ul>
                {items.map(item => (
