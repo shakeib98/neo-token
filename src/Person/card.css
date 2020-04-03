@@ -1,0 +1,38 @@
+.card-row {
+  display: flex;
+  flex-direction: row;
+  background-color: aqua;
+  width: 80%;
+
+  padding: 20px;
+  border-color: blue;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 20px;
+  overflow: scroll;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 10px;
+}
+
+.card-label {
+  display: block;
+  font-weight: 900;
+  text-align: left;
+  padding: 10px;
+}
+
+.card-item-width {
+  width: 50%;
+}
+.avg {
+  /* background-color: blue; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
