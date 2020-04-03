@@ -369,7 +369,9 @@ var address = "";
 var Web3 = require("web3");
 
 let ethereum = "";
-let contractAddress = "0x6Cae6bB83f87E09bB65b839a1254B6AF1A547BFf";
+// 
+// let contractAddress = "0x6Cae6bB83f87E09bB65b839a1254B6AF1A547BFf";
+let contractAddress = "0xe4417e795E34467d416df25D89d044315b847351";
 let contract = "";
 var web3 = "";
 
@@ -378,32 +380,36 @@ class Person extends Component {
     super(props);
     this.state = {
       value: "x",
+      numb:"0",
       result: [],
-      avg: 10029,
+      avg: 0,
     };
     // this.handleChange = this.handleChange.bind(this);
   }
 
   async componentDidMount() {
-    {
-      fetch(
-        "http://api.etherscan.io/api?module=account&action=tokentx&address=0x1e1d626c683901F03B83d571aF4c8DEBc24E3a05&startblock=0&endblock=999999999&sort=desc&apikey=YourApiKeyToken"
+     fetch(
+        "http://api.etherscan.io/api?module=account&action=tokentx&address=0x1e1d626c683901F03B83d571aF4c8DEBc24E3a05&startblock=0&endblock=999999999&sort=desc&apikey=F9AE6HQGAF6DNNBCNXNJWX3APPP21SVYQ4"
       )
         .then((res) => {
           // console.log("st", res);
           return res.json();
         })
         .then((res) => {
-          // console.log("f", res);
-          this.setState({ ...this.state, result: res.result });
+          console.log("f", res);
+          this.setState({  result: res.result });
         })
         .catch((err) => {
           console.log(err);
         });
-    }
+    
     if (window.web3) {
       web3 = new Web3(window.web3.currentProvider);
       contract = new web3.eth.Contract(ABI, contractAddress);
+      address = await web3.eth.getAccounts();
+      let balance = await contract.methods.balanceOf(address[0]).call()
+      balance = await web3.utils.fromWei(balance.toString())
+      this.setState({avg:balance})
       window.ethereum.enable();
     } else {
       alert("INSTALL METAMASK");
@@ -413,6 +419,12 @@ class Person extends Component {
   handleChange = (event) => {
     this.setState({
       value: event.target.value,
+    });
+  };
+
+  handleChangeNumber = (event) => {
+    this.setState({
+      numb: event.target.value,
     });
   };
 
@@ -513,12 +525,70 @@ class Person extends Component {
     }
   };
 
+  removeAdmin = async () => {
+    if (!this.state.value.toString().includes("0x")) {
+      alert("NOT A NUMBER");
+    } else {
+      address = await web3.eth.getAccounts();
+      let rawTx = {
+        from: address[0],
+        to: contractAddress,
+        gasLimit: 50000,
+        data: contract.methods
+          .removeAdmin(this.state.value.toString())
+          .encodeABI(),
+      };
+      await web3.eth.sendTransaction(rawTx);
+    }
+  };
+  unlockContract = async () => {
+    address = await web3.eth.getAccounts();
+    let rawTx = {
+      from: address[0],
+      to: contractAddress,
+      gasLimit: 50000,
+      data: contract.methods.unlockTransferContract().encodeABI(),
+    };
+    await web3.eth.sendTransaction(rawTx);
+  };
+  unlockTokens = async () => {
+    if (isNaN(this.state.value)) {
+      alert("NOT A NUMBER");
+    } else {
+      address = await web3.eth.getAccounts();
+      let amount = await web3.utils.toWei(this.state.value.toString());
+      let rawTx = {
+        from: address[0],
+        to: contractAddress,
+        gasLimit: 50000,
+        data: contract.methods.unlockTokens(amount).encodeABI(),
+      };
+      await web3.eth.sendTransaction(rawTx);
+    }
+  };
+  transfer = async () => {
+    console.log(this.state.numb)
+    if (isNaN(this.state.numb) || !this.state.value.includes("0x")) {
+      alert("NOT A NUMBER");
+    } else {
+      address = await web3.eth.getAccounts();
+      let amount = await web3.utils.toWei(this.state.numb.toString());
+      let rawTx = {
+        from: address[0],
+        to: contractAddress,
+        gasLimit: 50000,
+        data: contract.methods.transfer(this.state.value,amount).encodeABI(),
+      };
+      await web3.eth.sendTransaction(rawTx);
+    }
+  };
+
   render() {
-    let hash =
-      "0x17b780428ce764d8888385e3629d04bbec546fe778faf9d68c4576b9fdee63d5";
+    // let hash =
+    //   "0x17b780428ce764d8888385e3629d04bbec546fe778faf9d68c4576b9fdee63d5";
     let filtered = [];
     if (this.state.result != 0) {
-      filtered = this.state.result.filter((value) => value.hash === hash);
+      filtered = this.state.result.filter((value) => value.contractAddress.toString().toLowerCase() === contractAddress.toString().toLowerCase());
     }
     return (
       <div className="App">
@@ -526,13 +596,21 @@ class Person extends Component {
 
         <br />
         <div className="avg">
-          <span className="card-label">Avg:</span> {this.state.avg}
+          <span className="card-label">Balance:</span> {this.state.avg}
         </div>
         <br />
         <input
           style={{ height: "30px", width: "319px" }}
           onChange={this.handleChange}
           font-size="100"
+        />
+        <br />
+        <br />
+        <input
+          style={{ height: "30px", width: "319px" }}
+          onChange={this.handleChangeNumber}
+          font-size="100"
+          type="number"
         />
         <br />
         <br />
@@ -558,25 +636,25 @@ class Person extends Component {
         </button>
 
         <br />
-        <button className="button" onClick={() => this.mint()}>
+        <button className="button" onClick={() => this.removeAdmin()}>
           Remove Admin
         </button>
-        <button className="button" onClick={() => this.lockContract()}>
+        <button className="button" onClick={() => this.unlockContract()}>
           Unlock Contract
         </button>
-        <button className="button" onClick={() => this.burn()}>
+        <button className="button" onClick={() => this.unlockTokens()}>
           Unlock Tokens
         </button>
         <br />
-        <button className="button" onClick={() => this.burn()}>
-          Button 1
+        <button className="button" onClick={() => this.transfer()}>
+          Transfer
         </button>
-        <button className="button" onClick={() => this.burn()}>
+        {/* <button className="button" onClick={() => this.burn()}>
           Button2
         </button>
         <button className="button" onClick={() => this.burn()}>
           Button 3
-        </button>
+        </button> */}
         {this.state.result != 0 &&
           filtered.map((value, index) => {
             return (
@@ -586,7 +664,8 @@ class Person extends Component {
                 from={value.from}
                 to={value.to}
                 value={(
-                  parseFloat(value.value) / parseFloat(1000000000000000000)
+                  web3.utils.fromWei(value.value.toString())
+                  // Number(value.value) / Number(1000000000000000000)
                 ).toString()}
               />
             );
