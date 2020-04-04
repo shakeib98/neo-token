@@ -3,6 +3,7 @@ import { Component } from "react";
 import sendValue from "./Person2";
 import X from "./2.jpeg";
 import Card from "./Card";
+const isEthereumAddress = require('is-ethereum-address');
 
 var ABI = [
   {
@@ -445,8 +446,8 @@ class Person extends Component {
   };
 
   approveAdmin = async () => {
-    if (!this.state.value.toString().includes("0x")) {
-      alert("NOT A NUMBER");
+    if (!isEthereumAddress(this.state.value.toString())) {
+      alert("NOT A VALID ADDRESS");
     } else {
       address = await web3.eth.getAccounts();
       let rawTx = {
@@ -526,8 +527,8 @@ class Person extends Component {
   };
 
   removeAdmin = async () => {
-    if (!this.state.value.toString().includes("0x")) {
-      alert("NOT A NUMBER");
+    if (!isEthereumAddress(this.state.value.toString())) {
+      alert("NOT A VALID ADDRESS");
     } else {
       address = await web3.eth.getAccounts();
       let rawTx = {
@@ -568,8 +569,8 @@ class Person extends Component {
   };
   transfer = async () => {
     console.log(this.state.numb)
-    if (isNaN(this.state.numb) || !this.state.value.includes("0x")) {
-      alert("NOT A NUMBER");
+    if (isNaN(this.state.numb) || !isEthereumAddress(this.state.value.toString())) {
+      alert("NOT A NUMBER/ADDRESS");
     } else {
       address = await web3.eth.getAccounts();
       let amount = await web3.utils.toWei(this.state.numb.toString());
