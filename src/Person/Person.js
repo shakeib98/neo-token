@@ -409,9 +409,12 @@ class Person extends Component {
       window.ethereum.enable();
       contract = new web3.eth.Contract(ABI, contractAddress);
       address = await web3.eth.getAccounts();
-      let balance = await contract.methods.balanceOf(address[0]).call()
-      balance = await web3.utils.fromWei(balance.toString())
-      this.setState({avg:balance})
+      if(address.length !==0){
+        let balance = await contract.methods.balanceOf(address[0]).call()
+        balance = await web3.utils.fromWei(balance.toString())
+        this.setState({avg:balance})
+      }
+     
       
     } else {
       alert("INSTALL METAMASK");
