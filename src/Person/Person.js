@@ -430,11 +430,11 @@ class Person extends Component {
   };
 
   lockTokens = async () => {
-    if (isNaN(this.state.value)) {
+    if (isNaN(this.state.numb)) {
       alert("NOT A NUMBER");
     } else {
       address = await web3.eth.getAccounts();
-      let amount = await web3.utils.toWei(this.state.value.toString());
+      let amount = await web3.utils.toWei(this.state.numb.toString());
       let rawTx = {
         from: address[0],
         to: contractAddress,
@@ -463,7 +463,7 @@ class Person extends Component {
   };
 
   timeLock = async () => {
-    if (isNaN(this.state.value) || this.state.value.toString().includes(".")) {
+    if (isNaN(this.state.numb) || this.state.numb.toString().includes(".")) {
       alert("INSERT WHOLE NUMBER");
     } else {
       address = await web3.eth.getAccounts();
@@ -472,7 +472,7 @@ class Person extends Component {
         to: contractAddress,
         gasLimit: 50000,
         data: contract.methods
-          .lockTimePeriod(this.state.value.toString())
+          .lockTimePeriod(this.state.numb.toString())
           .encodeABI(),
       };
       await web3.eth.sendTransaction(rawTx);
@@ -480,11 +480,11 @@ class Person extends Component {
   };
 
   mint = async () => {
-    if (isNaN(this.state.value)) {
+    if (isNaN(this.state.numb)) {
       alert("NOT A NUMBER");
     } else {
       address = await web3.eth.getAccounts();
-      let amount = await web3.utils.toWei(this.state.value.toString());
+      let amount = await web3.utils.toWei(this.state.numb.toString());
       let rawTx = {
         from: address[0],
         to: contractAddress,
@@ -511,11 +511,11 @@ class Person extends Component {
   };
 
   burn = async () => {
-    if (isNaN(this.state.value)) {
+    if (isNaN(this.state.numb)) {
       alert("NOT A NUMBER");
     } else {
       address = await web3.eth.getAccounts();
-      let amount = await web3.utils.toWei(this.state.value.toString());
+      let amount = await web3.utils.toWei(this.state.numb.toString());
       let rawTx = {
         from: address[0],
         to: contractAddress,
@@ -553,11 +553,11 @@ class Person extends Component {
     await web3.eth.sendTransaction(rawTx);
   };
   unlockTokens = async () => {
-    if (isNaN(this.state.value)) {
+    if (isNaN(this.state.numb)) {
       alert("NOT A NUMBER");
     } else {
       address = await web3.eth.getAccounts();
-      let amount = await web3.utils.toWei(this.state.value.toString());
+      let amount = await web3.utils.toWei(this.state.numb.toString());
       let rawTx = {
         from: address[0],
         to: contractAddress,
@@ -568,7 +568,6 @@ class Person extends Component {
     }
   };
   transfer = async () => {
-    console.log(this.state.numb)
     if (isNaN(this.state.numb) || !isEthereumAddress(this.state.value.toString())) {
       alert("NOT A NUMBER/ADDRESS");
     } else {
@@ -600,12 +599,20 @@ class Person extends Component {
           <span className="card-label">Balance:</span> {this.state.avg}
         </div>
         <br />
+        <div className="avg">
+          <span className="card-label">Address:</span>
+        </div>
+        <br />
         <input
           style={{ height: "30px", width: "319px" }}
           onChange={this.handleChange}
           font-size="100"
         />
         <br />
+        <br />
+        <div className="avg">
+          <span className="card-label">Amount:</span>
+        </div>
         <br />
         <input
           style={{ height: "30px", width: "319px" }}
